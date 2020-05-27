@@ -5,6 +5,7 @@ import Container from '@material-ui/core/Container'
 import CardContent from '@material-ui/core/CardContent'
 import CardMedia from '@material-ui/core/CardMedia'
 import { BottomNavigation } from '@material-ui/core'
+import {handleGetUsers} from '../actions/shared'
 
 const styles={
     root: {
@@ -24,6 +25,10 @@ const styles={
 }
 
 class Leaderboard extends Component{
+    componentDidMount(){
+        this.props.dispatch(handleGetUsers())
+    }
+
     render(){
         const {users} = this.props
         return(
@@ -55,7 +60,6 @@ class Leaderboard extends Component{
 
 function mapStateToProps({users}){
     // Set the users object to an array and then sort it
-    console.log(users)
     let sortedUsers = []
     for(var user in users){
         sortedUsers.push(users[user])

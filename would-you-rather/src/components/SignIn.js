@@ -22,8 +22,9 @@ class SignIn extends Component{
 
     handleSetAuthedUser = (e) =>{
         e.preventDefault()
-
-        this.props.dispatch(setAuthedUser(this.state.selectedUser))
+        if(this.state.selectedUser !== ""){
+            this.props.dispatch(setAuthedUser(this.state.selectedUser))
+        }
     }
 
 

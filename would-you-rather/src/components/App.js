@@ -1,10 +1,14 @@
 import React, {Component, Fragment} from 'react';
 import {connect} from 'react-redux'
+import {BrowserRouter as Router, Route} from 'react-router-dom'
+import LoadingBar from 'react-redux-loading'
 import {handleInitialData} from '../actions/shared'
 import SignIn from './SignIn';
-import SignOut from './SignOut';
+import Nav from './Nav';
 import Leaderboard from './Leaderboard';
 import Questions from './Questions';
+import QuestionsCard from './Questions';
+import NewQuestionsCard from './NewQuestionsCard'
 
 
 class App extends Component {
@@ -14,17 +18,33 @@ class App extends Component {
 
 
   render(){
-    const {authedUser} = this.props
+    const {authedUser, loading} = this.props
+
     return (
-      <Fragment>
-        <div className="App">
-          {authedUser === null
-            ? <SignIn />
-            : <Questions />
-          }
-        
-        </div>
-      </Fragment>
+      <Router>
+        <Fragment>
+          <LoadingBar />
+ 
+            <div className="App">
+            
+            {authedUser === null
+              ? <SignIn />
+
+              : <div>
+                  <Nav />
+                  <Route path="/" exact component={Questions} />
+                  <Route path="/questions/:id" component={QuestionsCard} /> 
+                  <Route path="/new" component={NewQuestionsCard} />
+                  <Route path="/leaderboard" component={Leaderboard} />
+                </div>
+            }
+            
+          
+          </div>
+          
+          
+        </Fragment>
+      </Router>
     );
   }
 }
@@ -32,7 +52,8 @@ class App extends Component {
 
 function mapStateToProps({authedUser}){ 
   return{
-    authedUser: authedUser
+    authedUser: authedUser,
+    loading: authedUser === null ? true : false
   }
 }
 

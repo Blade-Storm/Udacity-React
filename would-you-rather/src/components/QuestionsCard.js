@@ -12,6 +12,9 @@ const styles ={
         minWidth: 275,
         marginBottom: 20,
     },
+    avatar:{
+        display: 'flex'
+    },
     bullet: {
         display: 'inline-block',
         margin: '0 2px',
@@ -26,16 +29,23 @@ const styles ={
 }
 
 class QuestionsCard extends Component{
+    state={
+        viewResults: false,
+        answerPoll: false,
+    }
     render(){
         const {questions, questionId, users} = this.props
+        const {viewResults, answerPoll} = this.state
+
         return(
             <Fragment>
                
                     <Card styles={styles.root} variant="outlined">
                         <CardContent>
-                            <Avatar alt={users[questions[questionId].author].name} src={users[questions[questionId].author].avatarURL} />
+                        <Avatar styles={styles.avatar} alt={users[questions[questionId].author].name} src={users[questions[questionId].author].avatarURL} />
                             <Typography variant="h5" component="h2">
-                                {users[questions[questionId].author].name} asks:
+                            
+                                <span>{users[questions[questionId].author].name} asks:</span>
                             </Typography>
                             <Typography styles={styles.title} color="textSecondary" gutterBottom>
                                 {questions[questionId].optionOne.text}

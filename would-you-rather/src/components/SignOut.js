@@ -13,7 +13,7 @@ class SignOut extends Component{
     }
 
     render(){
-        const {authedUser, user} = this.props
+        const {user} = this.props
         return(
             <div>
                 <p>Hello, {user.name}</p>
@@ -26,7 +26,6 @@ class SignOut extends Component{
 
 function mapStateToProps({authedUser, users}){
     return{
-        authedUser: authedUser,
         user: users[authedUser]
     }
 }

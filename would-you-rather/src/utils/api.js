@@ -6,7 +6,6 @@ import {
 } from './_DATA.js'
 
 export function getInitialData(){
-    console.log("GET INITIAL DATA")
     return Promise.all([
         _getUsers(),
         _getQuestions(),
@@ -16,6 +15,12 @@ export function getInitialData(){
     })).catch(()=>{
         console.log("An error occured getting the users and questions")
     })
+}
+
+export function getUsers(){
+    return Promise.all([
+        _getUsers(),
+    ]).then(([users]) => ({users}))
 }
 
 export function saveQuestion(info){

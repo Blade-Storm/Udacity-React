@@ -120,7 +120,6 @@ function generateUID () {
 }
 
 export function _getUsers () {
-  console.log("GET USERS:", users)
   return new Promise((res, rej) => {
     setTimeout(() => res({...users}), 1000)
   })
@@ -159,6 +158,7 @@ export function _saveQuestion (question) {
         [formattedQuestion.id]: formattedQuestion
       }
       
+      console.log("Before set: ", users[authedUser])
       users = {
         ...users,
         [authedUser]: {
@@ -167,6 +167,7 @@ export function _saveQuestion (question) {
         }
       }
 
+      console.log("After set: ", users[authedUser])
       res(formattedQuestion)
     }, 1000)
   })

@@ -4,7 +4,7 @@ import AppBar from '@material-ui/core/AppBar'
 import Tabs from '@material-ui/core/Tabs'
 import Tab from '@material-ui/core/Tab'
 import QuestionsCard from './QuestionsCard'
-// import TabPanel from '@material-ui/lab/TabPanel'
+
 
 function TabPanel(props) {
     const { children, value, index, questions, unansweredQuestions, answeredQuestions, ...other } = props;
@@ -19,7 +19,7 @@ function TabPanel(props) {
       >
         {/**Unanswered Questions Tab Value = 0 */}
         {value === 0 && unansweredQuestions.map((key) => (
-            <QuestionsCard key={key} questionId={key}/>
+            <QuestionsCard key={key} questionId={key} />
         ))}
 
         {/**Answered Questions Tab Value = 1 */}
@@ -28,7 +28,7 @@ function TabPanel(props) {
         ))}
       </div>
     );
-  }
+}
 
 function a11yProps(index) {
     return {
