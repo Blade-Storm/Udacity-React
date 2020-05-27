@@ -77,7 +77,7 @@ class NewQuestionsCard extends Component{
 
 
         return(
-            <Card styles={styles.root} variant="outlined">
+            <Card style={styles.root} variant="outlined">
                 <CardContent>
                     
                     <Typography variant="h5" component="h2">
@@ -88,7 +88,7 @@ class NewQuestionsCard extends Component{
                             <InputLabel htmlFor="option-one">Enter option one</InputLabel>
                             <Input id="option-one" value={optionOne} onChange={this.handleChange} />
                         </FormControl>
-                        <Typography styles={styles.title} color="textSecondary" gutterBottom>
+                        <Typography style={styles.title} color="textSecondary" gutterBottom>
                             OR
                         </Typography>
                         <FormControl>

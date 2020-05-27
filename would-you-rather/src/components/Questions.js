@@ -3,6 +3,7 @@ import {connect} from 'react-redux'
 import AppBar from '@material-ui/core/AppBar'
 import Tabs from '@material-ui/core/Tabs'
 import Tab from '@material-ui/core/Tab'
+import Container from '@material-ui/core/Container'
 import QuestionsCard from './QuestionsCard'
 
 
@@ -61,6 +62,7 @@ class Questions extends Component{
 
         return(
             <Fragment>
+                <Container maxWidth="xs">
                 <AppBar position="static">
                     <Tabs value={value} onChange={this.handleChange} aria-label="Toggle between answered and unanswered questions">
                         <Tab label="Unanswered Questions"  {...a11yProps(0)}  />
@@ -75,6 +77,7 @@ class Questions extends Component{
                 <TabPanel value={value} index={1} questions={questions} unansweredQuestions={unansweredQuestions} answeredQuestions={answeredQuestions}>
                     Answered Questions
                 </TabPanel>
+                </Container>
             </Fragment>
         )
     }

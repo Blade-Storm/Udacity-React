@@ -10,7 +10,8 @@ import Avatar from '@material-ui/core/Avatar'
 const styles ={
     root: {
         minWidth: 275,
-        marginBottom: 20,
+        marginBottom: 5,
+        marginTop: 5,
     },
     avatar:{
         display: 'flex'
@@ -20,19 +21,26 @@ const styles ={
         margin: '0 2px',
         transform: 'scale(0.8)',
     },
-    title: {
+    question: {
         fontSize: 14,
+    },
+    title: {
+        marginLeft: 15,
+        paddingTop: 3
     },
     pos: {
         marginBottom: 12,
     }
 }
 
+
+
 class QuestionsCard extends Component{
     state={
         viewResults: false,
         answerPoll: false,
     }
+    
     render(){
         const {questions, questionId, users} = this.props
         const {viewResults, answerPoll} = this.state
@@ -40,25 +48,29 @@ class QuestionsCard extends Component{
         return(
             <Fragment>
                
-                    <Card styles={styles.root} variant="outlined">
+                    <Card style={styles.root} variant="outlined">
                         <CardContent>
-                        <Avatar styles={styles.avatar} alt={users[questions[questionId].author].name} src={users[questions[questionId].author].avatarURL} />
-                            <Typography variant="h5" component="h2">
-                            
-                                <span>{users[questions[questionId].author].name} asks:</span>
-                            </Typography>
-                            <Typography styles={styles.title} color="textSecondary" gutterBottom>
+                            <div style={styles.avatar}>
+                                <Avatar alt={users[questions[questionId].author].name} src={users[questions[questionId].author].avatarURL} />
+                                <Typography style={styles.title} variant="h5" component="h2">
+                                
+                                    {users[questions[questionId].author].name} asks:
+                                </Typography>
+                            </div>
+                            <div>
+                            <Typography style={styles.question} color="textSecondary" gutterBottom>
                                 {questions[questionId].optionOne.text}
                             </Typography>
-                            <Typography styles={styles.title} color="textSecondary" gutterBottom>
+                            <Typography color="textSecondary" gutterBottom>
                                 OR
                             </Typography>
-                            <Typography styles={styles.title} color="textSecondary" gutterBottom>
+                            <Typography style={styles.question} color="textSecondary" gutterBottom>
                                 {questions[questionId].optionTwo.text}
                             </Typography>
+                            </div>
                         </CardContent>
                         <CardActions>
-                            <Button size="small">View Poll</Button>
+                            <Button variant="contained" size="small">View Poll</Button>
                         </CardActions>
                     </Card>
  
