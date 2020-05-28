@@ -7,6 +7,7 @@ import Typography from '@material-ui/core/Typography'
 import Button from '@material-ui/core/Button'
 import FormControl from '@material-ui/core/FormControl'
 import InputLabel from '@material-ui/core/InputLabel'
+import Container from '@material-ui/core/Container'
 import Input from '@material-ui/core/Input'
 import {handleAddQuestion} from '../actions/questions'
 
@@ -25,6 +26,14 @@ const styles ={
     },
     pos: {
         marginBottom: 12,
+    },
+    inputs: {
+        width: "-webkit-fill-available"
+    },
+    submitBtn: {
+        marginTop: 10,
+        marginBottom: 10,
+        float: "right"
     }
 }
 
@@ -77,29 +86,32 @@ class NewQuestionsCard extends Component{
 
 
         return(
-            <Card style={styles.root} variant="outlined">
-                <CardContent>
-                    
-                    <Typography variant="h5" component="h2">
-                        Create a new question
-                    </Typography>
-                    <form className={styles.root} noValidate autoComplete="off">
-                        <FormControl>
-                            <InputLabel htmlFor="option-one">Enter option one</InputLabel>
-                            <Input id="option-one" value={optionOne} onChange={this.handleChange} />
-                        </FormControl>
-                        <Typography style={styles.title} color="textSecondary" gutterBottom>
-                            OR
+            <Container maxWidth="xs">
+                <Card style={styles.root} variant="outlined">
+                    <CardContent>
+                        
+                        <Typography variant="h5" component="h2">
+                            Create a new question
                         </Typography>
-                        <FormControl>
-                            <InputLabel htmlFor="option-two">Enter option two</InputLabel>
-                            <Input id="option-two" value={optionTwo} onChange={this.handleChange} />
-                        </FormControl>
-                    </form>
-                    <Button variant="contained" color="primary" onClick={this.handleSubmit}>Submit</Button>
-                </CardContent>
+                        <form style={styles.root} noValidate autoComplete="off">
+                            <FormControl style={styles.inputs}>
+                                <InputLabel htmlFor="option-one">Enter option one</InputLabel>
+                                <Input id="option-one" value={optionOne} onChange={this.handleChange} />
+                            </FormControl>
+                            <Typography style={styles.title} color="textSecondary" gutterBottom>
+                                OR
+                            </Typography>
+                            <FormControl style={styles.inputs}>
+                                <InputLabel htmlFor="option-two">Enter option two</InputLabel>
+                                <Input id="option-two" value={optionTwo} onChange={this.handleChange} />
+                            </FormControl>
+                            <Button style={styles.submitBtn} variant="contained" color="primary" onClick={this.handleSubmit}>Submit</Button>
+                        </form>
+                        
+                    </CardContent>
 
-            </Card>
+                </Card>
+            </Container>
         )
     }
 }

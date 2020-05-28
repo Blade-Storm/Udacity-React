@@ -33,7 +33,7 @@ class App extends Component {
               : <div>
                   <Nav />
                   <Route path="/" exact component={Questions} />
-                  <Route path="/questions/:id" component={QuestionsCard} /> 
+                  <Route path="/questions/:id" component={Questions} /> 
                   <Route path="/new" component={NewQuestionsCard} />
                   <Route path="/leaderboard" component={Leaderboard} />
                 </div>
@@ -52,7 +52,7 @@ class App extends Component {
 
 function mapStateToProps({authedUser}){ 
   return{
-    authedUser: authedUser,
+    authedUser,
     loading: authedUser === null ? true : false
   }
 }
