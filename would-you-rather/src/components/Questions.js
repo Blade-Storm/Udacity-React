@@ -25,7 +25,7 @@ function TabPanel(props) {
 
         {/**Answered Questions Tab Value = 1 */}
         {value === 1 && answeredQuestions.map((key) => (
-            <QuestionsCard key={key} questionId={key} toStats={false} viewPoll={false}/>
+            <QuestionsCard key={key} questionId={key} toStats={true} viewPoll={true}/>
         ))}
       </div>
     );
@@ -49,8 +49,8 @@ class Questions extends Component{
      * Unanswered Questions Tab Value = 0
      * Answered Questions Tab Value = 1
      */
-    handleChange = () =>{
-        let newValue = null
+    handleChange = (e) =>{
+        let newValue = e.target.value
         if(this.state.value === 0){
             newValue = 1
         }else{
@@ -82,7 +82,7 @@ class Questions extends Component{
                     {viewPoll === false && (
                         <Fragment>
                         <AppBar position="static">
-                            <Tabs value={value} onChange={this.handleChange} aria-label="Toggle between answered and unanswered questions">
+                            <Tabs value={value} onChange={(e) => this.handleChange(e)} aria-label="Toggle between answered and unanswered questions">
                                 <Tab label="Unanswered Questions"  {...a11yProps(0)}  />
                                 <Tab label="Answered Questions"  {...a11yProps(1)}  />
                             </Tabs>
@@ -109,10 +109,10 @@ class Questions extends Component{
 
 function mapStateToProps({questions, authedUser, users}, props){
     let answeredQuestions, unansweredQuestions = []
-    // Keys of the answered questions
-    answeredQuestions = Object.keys(users[authedUser].answers)
-    // Keys of the unanswered questions
-    unansweredQuestions = Object.keys(questions).filter(key => !answeredQuestions.includes(questions[key].id))
+    // Keys of the answered questions. Sort them by newest to oldest
+    answeredQuestions = Object.keys(users[authedUser].answers).sort((a,b) => questions[b].timestamp - questions[a].timestamp)
+    // Keys of the unanswered questions Sort them by newest to oldest
+    unansweredQuestions = Object.keys(questions).filter(key => !answeredQuestions.includes(questions[key].id)).sort((a,b) => questions[b].timestamp - questions[a].timestamp)
 
     let viewPoll = false
     if(props.viewPoll !== undefined){
@@ -120,7 +120,7 @@ function mapStateToProps({questions, authedUser, users}, props){
     }else if(props.match !== undefined && props.match.path === "/questions/:id"){
         viewPoll = true
     }
-
+    
     return{
         questions,
         answeredQuestions,

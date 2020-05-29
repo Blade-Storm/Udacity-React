@@ -7,7 +7,6 @@ import SignIn from './SignIn';
 import Nav from './Nav';
 import Leaderboard from './Leaderboard';
 import Questions from './Questions';
-import QuestionsCard from './Questions';
 import NewQuestionsCard from './NewQuestionsCard'
 
 
@@ -18,7 +17,7 @@ class App extends Component {
 
 
   render(){
-    const {authedUser, loading} = this.props
+    const {authedUser} = this.props
 
     return (
       <Router>
@@ -50,10 +49,10 @@ class App extends Component {
 }
 
 
-function mapStateToProps({authedUser}){ 
+function mapStateToProps({authedUser, loading}){ 
   return{
     authedUser,
-    loading: authedUser === null ? true : false
+    loading
   }
 }
 

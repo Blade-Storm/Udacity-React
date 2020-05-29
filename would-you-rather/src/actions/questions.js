@@ -35,9 +35,12 @@ export function handleAddQuestion(optionOneText, optionTwoText){
     }
 }
 
-function questionAnswer(){
+function questionAnswer(authedUser, qid, answer){
     return{
         type: SAVE_QUESTION,
+        authedUser, 
+        qid, 
+        answer
     }
 }
 
@@ -45,12 +48,14 @@ export function handleSaveQuestionAnswer(answer, qid){
     return (dispatch, getState) => {
         const {authedUser} = getState()
         dispatch(showLoading())
+
         return saveQuestionAnswer({
             authedUser,
-            answer,
-            qid
+            qid,
+            answer
         })
-        .then(() => dispatch(questionAnswer()))
+        // Since the _saveQuestionAnswer method doesnt return anything we need to pass the params directly with the dispatch call
+        .then(() => dispatch(questionAnswer(authedUser, qid, answer)))
         .then(() => dispatch(hideLoading()))
     }
 }

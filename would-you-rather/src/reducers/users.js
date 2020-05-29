@@ -1,4 +1,5 @@
 import {RECEIVE_USERS} from '../actions/users'
+import {SAVE_QUESTION} from '../actions/questions'
 
 
 export default function users(state= {}, action){
@@ -8,6 +9,18 @@ export default function users(state= {}, action){
                 ...state,
                 ...action.users
             }
+        case SAVE_QUESTION: {
+            return {
+                ...state,
+                [action.authedUser] : {
+                    ...state[action.authedUser],
+                    answers : {
+                        ...state[action.authedUser].answers,
+                        [action.qid] : action.answer
+                    }
+                }
+            }
+        }
         default:
             return state
     }

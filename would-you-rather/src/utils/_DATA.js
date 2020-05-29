@@ -158,7 +158,6 @@ export function _saveQuestion (question) {
         [formattedQuestion.id]: formattedQuestion
       }
       
-      console.log("Before set: ", users[authedUser])
       users = {
         ...users,
         [authedUser]: {
@@ -167,7 +166,6 @@ export function _saveQuestion (question) {
         }
       }
 
-      console.log("After set: ", users[authedUser])
       res(formattedQuestion)
     }, 1000)
   })

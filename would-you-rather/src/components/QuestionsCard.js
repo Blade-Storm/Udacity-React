@@ -1,6 +1,6 @@
 import React, {Component, Fragment} from 'react'
 import {connect} from 'react-redux'
-import {Redirect, withRouter} from 'react-router-dom'
+import {withRouter} from 'react-router-dom'
 import Card from '@material-ui/core/Card'
 import CardContent from '@material-ui/core/CardContent'
 import CardActions from '@material-ui/core/CardActions'
@@ -14,6 +14,7 @@ import FormControlLabel  from '@material-ui/core/FormControlLabel'
 import Radio  from '@material-ui/core/Radio'
 import {handleSaveQuestionAnswer} from '../actions/questions'
 import Questions from './Questions'
+import Error from './Error'
 
 
 const styles ={
@@ -25,20 +26,12 @@ const styles ={
     avatar:{
         display: 'flex'
     },
-    bullet: {
-        display: 'inline-block',
-        margin: '0 2px',
-        transform: 'scale(0.8)',
-    },
     question: {
         fontSize: 14,
     },
     title: {
         marginLeft: 15,
         paddingTop: 3
-    },
-    pos: {
-        marginBottom: 12,
     },
     submitBtn: {
         float: "right"
@@ -50,7 +43,6 @@ const styles ={
 class QuestionsCard extends Component{
     state={
         selectedAnswer: '',
-        submitted: false,
         toStats: false
     }
 
@@ -68,7 +60,6 @@ class QuestionsCard extends Component{
         this.props.dispatch(handleSaveQuestionAnswer(this.state.selectedAnswer, this.props.questionId))
       
         this.setState(() => ({
-            submitted: true,
             toStats: true,
         }))
     }
@@ -83,7 +74,18 @@ class QuestionsCard extends Component{
     }
     
     render(){
-        const {questions, questionId, users, viewPoll, toStats} = this.props
+        const {questions, questionId, users, viewPoll, toStats, authedUser} = this.props
+        let question = null
+
+
+        // If the question doesnt exist then show the 404 error
+        if(questions[questionId] === undefined){
+            return (
+                <Error />
+            )
+        }else{
+            question = questions[questionId]
+        }
        
         if(this.state.toStats === true){
             // set viewPoll to true to show the just the card (removes the tabs for switching between answered and unanswered questions)
@@ -103,9 +105,9 @@ class QuestionsCard extends Component{
                     <Card style={styles.root} variant="outlined">
                         <CardContent>
                             <div style={styles.avatar}>
-                                <Avatar alt={users[questions[questionId].author].name} src={users[questions[questionId].author].avatarURL} />
+                                <Avatar alt={users[question.author].name} src={users[question.author].avatarURL} />
                                 <Typography style={styles.title} variant="h5" component="h2">     
-                                    {users[questions[questionId].author].name} asks:
+                                    {users[question.author].name} asks:
                                 </Typography>
                             </div>
 
@@ -114,8 +116,8 @@ class QuestionsCard extends Component{
                                     <FormControl component="fieldset">
                                         <FormLabel component="legend">Would you rather...</FormLabel>
                                         <RadioGroup aria-label="question" name="question" value={this.state.selectedAnswer} onChange={(e) => this.handleRadioChange(e.target.value)}>
-                                            <FormControlLabel value={"optionOne"} control={<Radio />} label={questions[questionId].optionOne.text} />
-                                            <FormControlLabel value={"optionTwo"} control={<Radio />} label={questions[questionId].optionTwo.text} />
+                                            <FormControlLabel value={"optionOne"} control={<Radio />} label={question.optionOne.text} />
+                                            <FormControlLabel value={"optionTwo"} control={<Radio />} label={question.optionTwo.text} />
                                         </RadioGroup>
                                             <Button type="submit" variant="contained" color="primary">Submit</Button>
                                     </FormControl>
@@ -131,14 +133,37 @@ class QuestionsCard extends Component{
                     <Card style={styles.root} variant="outlined">
                         <CardContent>
                             <div style={styles.avatar}>
-                                <Avatar alt={users[questions[questionId].author].name} src={users[questions[questionId].author].avatarURL} />
+                                <Avatar alt={users[question.author].name} src={users[question.author].avatarURL} />
                                 <Typography style={styles.title} variant="h5" component="h2">     
-                                    {users[questions[questionId].author].name} asks:
+                                    {users[question.author].name} asks:
                                 </Typography>
                             </div>
-
+                            {/**
+                             * Show the results of the question
+                             */}
                             <div>
-                                
+                                {users[authedUser].answers[questionId] !== undefined &&
+                                    <Typography variant="subtitle1" color="primary">
+                                        You selected <b>{question[users[authedUser].answers[questionId]].text}</b>
+                                    </Typography>
+                                }
+                                <Typography style={styles.question} color="textSecondary" gutterBottom>
+                                    {question.optionOne.text}
+                                    <br />
+                                    Votes: {question.optionOne.votes.length}
+                                    <br />
+                                    Percentage: {((question.optionOne.votes.length/(question.optionOne.votes.length+question.optionTwo.votes.length))*100).toFixed()}%
+                                </Typography>
+                                <Typography color="textSecondary" gutterBottom>
+                                    OR
+                                </Typography>
+                                <Typography style={styles.question} color="textSecondary" gutterBottom>
+                                    {question.optionTwo.text}
+                                    <br />
+                                    Votes: {question.optionTwo.votes.length}
+                                    <br />
+                                    Percentage: {((question.optionTwo.votes.length/(question.optionOne.votes.length+question.optionTwo.votes.length))*100).toFixed()}%
+                                </Typography>
                             </div>
                         </CardContent>
                     </Card>
@@ -150,21 +175,21 @@ class QuestionsCard extends Component{
                     <Card style={styles.root} variant="outlined">
                         <CardContent>
                             <div style={styles.avatar}>
-                                <Avatar alt={users[questions[questionId].author].name} src={users[questions[questionId].author].avatarURL} />
+                                <Avatar alt={users[question.author].name} src={users[question.author].avatarURL} />
                                 <Typography style={styles.title} variant="h5" component="h2">
-                                    {users[questions[questionId].author].name} asks:
+                                    {users[question.author].name} asks:
                                 </Typography>
                             </div>
 
                             <div>
                                 <Typography style={styles.question} color="textSecondary" gutterBottom>
-                                    {questions[questionId].optionOne.text}
+                                    {question.optionOne.text}
                                 </Typography>
                                 <Typography color="textSecondary" gutterBottom>
                                     OR
                                 </Typography>
                                 <Typography style={styles.question} color="textSecondary" gutterBottom>
-                                    {questions[questionId].optionTwo.text}
+                                    {question.optionTwo.text}
                                 </Typography>
                             </div>
                         </CardContent>
@@ -179,13 +204,16 @@ class QuestionsCard extends Component{
     }
 }
 
-function mapStateToProps({questions, users}, {questionId, viewPoll, toStats} ){   
+function mapStateToProps({questions, users, authedUser}, {questionId, viewPoll, toStats} ){   
+
+
     return{
         questions,
         users,
         questionId,
         viewPoll,
-        toStats
+        toStats,
+        authedUser
     }
 }
 

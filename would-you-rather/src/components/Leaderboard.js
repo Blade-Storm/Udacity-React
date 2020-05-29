@@ -1,10 +1,9 @@
-import React, {Component, Fragment} from 'react'
+import React, {Component} from 'react'
 import {connect} from 'react-redux'
 import Card from '@material-ui/core/Card'
 import Container from '@material-ui/core/Container'
 import CardContent from '@material-ui/core/CardContent'
 import CardMedia from '@material-ui/core/CardMedia'
-import { BottomNavigation } from '@material-ui/core'
 import {handleGetUsers} from '../actions/shared'
 
 const styles={
@@ -32,28 +31,33 @@ class Leaderboard extends Component{
     render(){
         const {users} = this.props
         return(
-            <Container maxWidth="xs">
-                {users !== null && users.map((user) => (
-                    <Card key={user.id} style={styles.root}>
-                        <CardMedia
-                            style={styles.cover}
-                            image={user.avatarURL}
-                            title={user.name}
-                        />
+            
+                <Container maxWidth="xs">
+                  
+                    {users !== null && users.map((user) => (
+                        <Card key={user.id} style={styles.root}>
+                            <CardMedia
+                                style={styles.cover}
+                                image={user.avatarURL}
+                                title={user.name}
+                            />
 
-                        <div style={styles.details}>
-                            <CardContent style={styles.content}>
-                                <h4>{user.name}</h4>
-                                <p>Answered Questions: {Object.keys(user.answers).length}</p>
-                                <p>Created Questions: {user.questions.length}</p>
-                               
-                                <p>Score: {Object.keys(user.answers).length + user.questions.length}</p>
-                            </CardContent>
-                        
-                        </div>
-                    </Card>
-                ))}
-            </Container>
+                            <div style={styles.details}>
+                                <CardContent style={styles.content}>
+                                    <h4>{user.name}</h4>
+                                    <p>Answered Questions: {Object.keys(user.answers).length}</p>
+                                    <p>Created Questions: {user.questions.length}</p>
+                                
+                                    <p>Score: {Object.keys(user.answers).length + user.questions.length}</p>
+                                </CardContent>
+                            
+                            </div>
+                        </Card>
+                    ))}
+                    
+                </Container>
+            
+            
         )
     }
 }
@@ -80,7 +84,7 @@ function mapStateToProps({users}){
     })
 
     return{
-        users: sortedUsers
+        users: sortedUsers,
     }
 }
 
