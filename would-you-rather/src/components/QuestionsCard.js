@@ -28,6 +28,10 @@ const styles ={
     },
     question: {
         fontSize: 14,
+        color: "black"
+    },
+    questionStats: {
+        fontSize: 14
     },
     title: {
         marginLeft: 15,
@@ -35,6 +39,12 @@ const styles ={
     },
     submitBtn: {
         float: "right"
+    },
+    viewPollBtn: {
+        paddingTop: 0
+    },
+    viewQuestion: {
+        marginTop: 16
     }
 }
 
@@ -156,7 +166,8 @@ class QuestionsCard extends Component{
                                 }
                                 <Typography style={styles.question} color="textSecondary" gutterBottom>
                                     {question.optionOne.text}
-                                    <br />
+                                </Typography>
+                                <Typography style={styles.questionStats} color="textSecondary" gutterBottom>
                                     Votes: {question.optionOne.votes.length}
                                     <br />
                                     Percentage: {((question.optionOne.votes.length/(question.optionOne.votes.length+question.optionTwo.votes.length))*100).toFixed()}%
@@ -166,7 +177,8 @@ class QuestionsCard extends Component{
                                 </Typography>
                                 <Typography style={styles.question} color="textSecondary" gutterBottom>
                                     {question.optionTwo.text}
-                                    <br />
+                                </Typography>
+                                <Typography style={styles.questionStats} color="textSecondary" gutterBottom>
                                     Votes: {question.optionTwo.votes.length}
                                     <br />
                                     Percentage: {((question.optionTwo.votes.length/(question.optionOne.votes.length+question.optionTwo.votes.length))*100).toFixed()}%
@@ -188,7 +200,7 @@ class QuestionsCard extends Component{
                                 </Typography>
                             </div>
 
-                            <div>
+                            <div style={styles.viewQuestion}>
                                 <Typography style={styles.question} color="textSecondary" gutterBottom>
                                     {question.optionOne.text}
                                 </Typography>
@@ -201,7 +213,7 @@ class QuestionsCard extends Component{
                             </div>
                         </CardContent>
 
-                        <CardActions>
+                        <CardActions  style={styles.viewPollBtn}>
                             <Button variant="contained" size="small" onClick={(e) => this.toParent(e, questionId)}>View Poll</Button>
                         </CardActions>
                     </Card>
