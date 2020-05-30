@@ -37,7 +37,9 @@ const styles ={
     }
 }
 
-
+/**
+ * NewQuestionsCard component for adding a new would you rather question
+ */
 class NewQuestionsCard extends Component{
     state={
         optionOne: '',
@@ -45,6 +47,9 @@ class NewQuestionsCard extends Component{
         toHome: false
     }
 
+    /**
+     * handleChange sets the value for the two questions that the user enters
+     */
     handleChange = (event) => {
         const value = event.target.value
         if(event.target.id === 'option-one'){
@@ -58,6 +63,9 @@ class NewQuestionsCard extends Component{
         }
     }
 
+    /**
+     * handleSubmit adds the new question and redirects the user to the home tab
+     */
     handleSubmit = (event) =>{
         event.preventDefault()
 

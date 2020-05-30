@@ -23,6 +23,9 @@ const styles={
     },
 }
 
+/**
+ * Shows the user cards in the leaderboard
+ */
 class Leaderboard extends Component{
     componentDidMount(){
         this.props.dispatch(handleGetUsers())

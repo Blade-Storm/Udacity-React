@@ -10,6 +10,9 @@ import Questions from './Questions';
 import NewQuestionsCard from './NewQuestionsCard'
 
 
+/**
+ * App component that holds the routing for the other major components ans shows the signin component if there isnt an authed user
+ */
 class App extends Component {
   componentDidMount(){
     this.props.dispatch(handleInitialData())
@@ -17,13 +20,13 @@ class App extends Component {
 
 
   render(){
-    const {authedUser} = this.props
+    const {authedUser,loading} = this.props
 
     return (
       <Router>
         <Fragment>
           <LoadingBar />
- 
+          
             <div className="App">
             
             {authedUser === null
@@ -40,7 +43,7 @@ class App extends Component {
             
           
           </div>
-          
+  
           
         </Fragment>
       </Router>
@@ -52,7 +55,7 @@ class App extends Component {
 function mapStateToProps({authedUser, loading}){ 
   return{
     authedUser,
-    loading
+    loading: authedUser = null
   }
 }
 

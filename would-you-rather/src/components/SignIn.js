@@ -30,7 +30,9 @@ const styles = {
     }
 }
 
-
+/**
+ * Selects a user to auth into the app with
+ */
 class SignIn extends Component{
     state={
         selectedUser: ""
@@ -43,6 +45,9 @@ class SignIn extends Component{
     }
 
 
+    /**
+     * Set what the user selected as the authenticated user
+     */
     handleSetAuthedUser = (e) =>{
         e.preventDefault()
         if(this.state.selectedUser !== ""){

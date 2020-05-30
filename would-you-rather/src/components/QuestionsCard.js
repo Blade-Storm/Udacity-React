@@ -39,7 +39,12 @@ const styles ={
 }
 
 
-
+/**
+ * QuestionsCard shows all of the varients of question information
+ * 1. In the home screen when the user is viewing the unanswered questions (shows options and view poll button to answer the question)
+ * 2. When the card is in the view poll state that allows the user to select and submit their response
+ * 3. In the answered section of the home view which shows the user what they selected and the voting stats for that question
+ */
 class QuestionsCard extends Component{
     state={
         selectedAnswer: '',
@@ -48,6 +53,7 @@ class QuestionsCard extends Component{
 
     /**
      * when the user click the "View Poll" button we navigate to the questions/id and show the user just the question they selected
+     * for them to answer it
      */
     toParent = (e, id) => {
         e.preventDefault()
@@ -87,19 +93,20 @@ class QuestionsCard extends Component{
             question = questions[questionId]
         }
        
+        /**
+         * If the toState state is true then the user just answered the question
+         */
         if(this.state.toStats === true){
-            // set viewPoll to true to show the just the card (removes the tabs for switching between answered and unanswered questions)
-            // set toStats to true to modify the card to show the stats
+            // set viewPoll to true to show the just the card (done to remove the tabs for switching between answered and unanswered questions)
             return (
                 <Questions questionId={questionId} viewPoll={true} toStats={true}/>
             )
         }
 
         return(
-           
             <Fragment>
                 {/**
-                 * If viewPoll is true and toStats is false then we need to let the user choose which question they would rather want
+                 * If viewPoll is true (clicked on the view poll button) and toStats is false then we need to let the user choose which question they would rather want
                  */}
                 {viewPoll && !toStats && (
                     <Card style={styles.root} variant="outlined">
@@ -127,7 +134,7 @@ class QuestionsCard extends Component{
                     </Card>
                 )}
                 {/**
-                 * If viewPoll is true and toStats is true then we need to show the user the Results of that poll
+                 * If viewPoll is true and toStats is true (answered the question) then we need to show the user the Results of that poll
                  */}
                 {viewPoll && toStats && (
                     <Card style={styles.root} variant="outlined">
@@ -169,7 +176,7 @@ class QuestionsCard extends Component{
                     </Card>
                 )}
                 {/**
-                 * if viewPoll is false then show the card without the option for the user to choose. Display purposes only
+                 * if viewPoll is false then show the card without the option for the user to choose but allow them to click on the view poll button to answer the question
                  */}
                 {!viewPoll && (
                     <Card style={styles.root} variant="outlined">

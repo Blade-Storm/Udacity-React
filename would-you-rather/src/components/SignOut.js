@@ -20,7 +20,9 @@ const styles = {
     }
 }
 
-
+/**
+ * SignOut resets the authed user to null which will reshow the SignIn component
+ */
 class SignOut extends Component{
     handleSignOut =(e) =>{
         e.preventDefault()

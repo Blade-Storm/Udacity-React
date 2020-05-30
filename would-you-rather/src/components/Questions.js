@@ -39,6 +39,9 @@ function a11yProps(index) {
 }
 
 
+/**
+ * Questions show the unanswered and answered questions when the user navigates to the home tab
+ */
 class Questions extends Component{
     state={
         value: 0,
@@ -117,6 +120,7 @@ function mapStateToProps({questions, authedUser, users}, props){
     let viewPoll = false
     if(props.viewPoll !== undefined){
         viewPoll = props.viewPoll
+        // When we navigate to "/questions/:id" 
     }else if(props.match !== undefined && props.match.path === "/questions/:id"){
         viewPoll = true
     }

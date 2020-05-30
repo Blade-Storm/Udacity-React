@@ -32,6 +32,9 @@ const styles = {
 
 }
 
+/**
+ * Navigation component that holds the top navigation bar
+ */
 export default function Nav(){
     return(
         <nav style={styles.nav}>
