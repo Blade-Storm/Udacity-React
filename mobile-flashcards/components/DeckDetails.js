@@ -19,48 +19,41 @@ class DeckDetails extends Component{
 
     // Delete the deck
     deleteDeck = (deckTitle) => {
-        
         // Remove the deck from Redux and the Storage
         this.props.dispatch(removeDeck(deckTitle))
         deleteDeck(deckTitle)
-
-        this.props.navigation.navigate.goBack()
-    }
-
-    addCard = (deckTitle) => {
-        this.props.navigation.navigate("AddCard", {deck: deckTitle})
-    }
-
-    startQuiz = () => {
-
     }
 
     
     render(){
         const {deckData, navigation} = this.props
-        console.log("deckData: ",deckData)
+        if(deckData === null){
+            navigation.navigate("Decks")
+        }
+
+        let cardCountText = deckData.questions.length === 1 ? "card" : "cards"
+
         return(
-            
             <View style={styles.container}>
                 <View style={styles.textContainer}>
                     <Text style={styles.title}>{deckData.title}</Text>
-                    <Text style={styles.questionCount}>{deckData.questions.length} cards</Text>
+                    <Text style={styles.questionCount}>{deckData.questions.length} {cardCountText}</Text>
                 </View>
                 
-                <View>
-                    <BasicButton 
-                        title="Add Card" 
-                        onPress={() => this.addCard(deckData.title)}
-                    > Add Card</BasicButton>
-                    <BasicButton 
-                        title="Start Quiz" 
-                        onPress={this.startQuiz()}
-                    > Start Quiz</BasicButton>
+                <View style={{flex: 1, justifyContent: "flex-end", width: "100%"}}>
                     <TextButton 
                         title="Delete Deck" 
                         onPress={() => this.deleteDeck(deckData.title)} 
                         style={{color: red}}
                     > Delete Deck</TextButton>
+                    <BasicButton 
+                        title="Add Card" 
+                        onPress={() => navigation.navigate("AddCard", {deck: deckData.title})}
+                    > Add Card</BasicButton>
+                    <BasicButton 
+                        title="Start Quiz" 
+                        onPress={() => navigation.navigate("Quiz", {title: deckData.title})}
+                    > Start Quiz</BasicButton>
                 </View>
             </View>
         )
@@ -70,11 +63,13 @@ class DeckDetails extends Component{
 const styles = {
     container: {
         flex: 1,
-        justifyContent: 'center',
+        justifyContent: 'flex-end',
         alignItems: "center",
     },
     textContainer: {
-        marginBottom: 50
+        justifyContent: 'flex-end',
+        marginBottom: 50,
+        flex: 1
     },
     title: {
         textAlign: "center",
@@ -89,9 +84,11 @@ const styles = {
 
 function mapStateToProps(state, {route, navigation}){
     const title = route.params.title !== undefined ? route.params.title : null
+    console.log("MSTP TITLE: ", title)
+    console.log("MSTP DECK: ", state[title])
 
     return {
-        deckData:  state[title],
+        deckData:  state[title] !== undefined ? state[title] : null,
         navigation,
     }
 }

@@ -27,6 +27,8 @@ const styles = StyleSheet.create({
     marginBottom: 10,
     paddingLeft: 50,
     paddingRight: 50,
+    paddingBottom: 10,
+    paddingTop: 10,
   },
   basicBtn: {
     backgroundColor: black,
@@ -37,9 +39,9 @@ const styles = StyleSheet.create({
     height: 45,
     borderRadius: 2,
     alignSelf: 'center',
-    justifyContent: 'center',
-    alignItems: "center",
+    justifyContent: 'flex-end',
+    textAlign: "center",
     marginTop: 10,
-    marginBottom: 10
+    marginBottom: 10,
   },
 })

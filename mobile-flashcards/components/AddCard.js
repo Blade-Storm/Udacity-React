@@ -23,11 +23,19 @@ class AddCard extends Component{
         }))
     }
 
+    // Submit the new card to the deck
     submit = () => {
+        // TODO: Let the user know they need to enter something in for the fields
+        if(this.state.questionValue.trim() === "" || this.state.answerValue.trim() === ""){
+            return
+        }
+
+        // Create the new card object
         let newCard = {
             question: this.state.questionValue,
             answer: this.state.answerValue
         }
+
         // Update the deck with the new card
         this.props.dispatch(addDeckInfo(this.props.deckTitle, newCard))
         addCardToDeck(this.props.deckTitle, newCard)
@@ -39,7 +47,7 @@ class AddCard extends Component{
         }))
 
         // Navigate back
-        this.props.navigation.navigate("DeckDetails")
+        this.props.navigation.navigate("DeckDetails", {title: this.props.deckTitle})
     }
 
     render(){
@@ -47,13 +55,14 @@ class AddCard extends Component{
 
         return (
             <View style={styles.container}>
-                <Text style={styles.title}>Question</Text>
-                <TextInput 
-                    onChangeText={(text) => this.onChangeQuestionText(text)}
-                    value={questionValue}
-                    placeholder='Question'
-                    style={styles.input}
-                />
+               
+                    <Text style={styles.title}>Question</Text>
+                    <TextInput 
+                        onChangeText={(text) => this.onChangeQuestionText(text)}
+                        value={questionValue}
+                        placeholder='Question'
+                        style={styles.input}
+                    />
 
                 <Text style={styles.title}>Answer</Text>
                 <TextInput 
@@ -62,12 +71,13 @@ class AddCard extends Component{
                     placeholder='Answer'
                     style={styles.input}
                 />
-
+            
                 <BasicButton 
                         title="Submit" 
                         onPress={this.submit}
                         accessibilityLabel="Submit the new card for the deck"
                 > Submit</BasicButton>
+                
             </View>
         )
     }

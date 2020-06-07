@@ -4,9 +4,11 @@ const DECK_STORAGE_KEY = 'FlashCards:deck'
 
 //  Return all of the decks along with their titles, questions, and answers.
 export function getDecks(){
-    return AsyncStorage.getItem(DECK_STORAGE_KEY).then(data => {
-        return data !== null ? JSON.parse(data) : null
-    });
+    return AsyncStorage.getItem(DECK_STORAGE_KEY)
+        .then(data => {
+            return data !== null ? JSON.parse(data) : null
+        }
+    );
 }
 
 //  Take in a single id argument and return the deck associated with that id.
@@ -24,6 +26,9 @@ export function saveDeckTitle(deckTitle){
     }
 
     AsyncStorage.setItem(DECK_STORAGE_KEY, JSON.stringify({[deckTitle]: newDeck}))
+        .catch((error) => {
+            console.log("There was an error saving the deck: ", error)
+        })
 }
 
 
@@ -34,16 +39,18 @@ export function addCardToDeck(deckTitle, newCard){
     // Get all of the decks and find the one we are adding the new card for. Merge the card with the found deck
     return getDecks()
         .then((decks) => {
-            
             decks[deckTitle].questions.push(newCard)
-            console.lop("OLD DECK: ", decks[deckTitle])
             AsyncStorage.mergeItem(DECK_STORAGE_KEY, JSON.stringify(decks))
-            
+                .catch((error) => {
+                    console.log("There was an error adding the question to the deck: ", error)
+                })
         })
 }
 
 // Delete a deck
 export function deleteDeck(deckTitle){
-   AsyncStorage.removeItem(DECK_STORAGE_KEY, deckTitle)
-    
+    AsyncStorage.removeItem(DECK_STORAGE_KEY, deckTitle)
+        .catch((error) => {
+            console.log("There was an error deleting the deck: ", error)
+        })
 }

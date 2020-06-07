@@ -11,6 +11,7 @@ import DeckOverview from './components/DeckOverview';
 import NewDeck from './components/NewDeck'
 import AddCard from  './components/AddCard'
 import DeckDetails from './components/DeckDetails'
+import Quiz from  './components/Quiz'
 import reducer from './reducers'
 import middleware from './middleware'
 
@@ -55,12 +56,17 @@ function TabNavigation(){
 
 
 const stackNavigatorOptions = (route) => {
+  let title = ""
+  if(route !== undefined && route.params !== undefined){
+    title = route.params.title
+  }
+  
   return {
     tabNavigationScreen: {
-      headerShown:false
+      headerShown: false
     },
     deckDetails: {
-      title: route !== undefined ? route.params.title : "Deck Details",
+      title: title,
       headerStatusBarHeight: 0,
       headerTintColor: white,
       headerStyle:{
@@ -69,6 +75,14 @@ const stackNavigatorOptions = (route) => {
     },
     addCard: {
       title: "Add Card",
+      headerStatusBarHeight: 0,
+      headerTintColor: white,
+      headerStyle:{
+        backgroundColor: black
+      }
+    },
+    quiz: {
+      title: `Quiz - ${title}`,
       headerStatusBarHeight: 0,
       headerTintColor: white,
       headerStyle:{
@@ -91,6 +105,7 @@ export default function App() {
                 <StackNavigator.Screen name="TabNavigation" options={() => stackNavigatorOptions().tabNavigationScreen} component={TabNavigation} />
                 <StackNavigator.Screen name="DeckDetails" options={({ route }) => stackNavigatorOptions(route).deckDetails} component={DeckDetails} />
                 <StackNavigator.Screen name="AddCard" options={({ route }) => stackNavigatorOptions(route).addCard} component={AddCard} />
+                <StackNavigator.Screen name="Quiz" options={({ route }) => stackNavigatorOptions(route).quiz} component={Quiz} />
             </StackNavigator.Navigator>
           </NavigationContainer>
       </View>

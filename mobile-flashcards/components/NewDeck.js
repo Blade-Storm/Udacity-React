@@ -26,7 +26,7 @@ class NewDeck extends Component{
         this.props.dispatch(addDeckTitle(value))
         saveDeckTitle(value)
 
-        // TODO: Navigate to the individual deck view and clear the form
+        // Navigate to the individual deck view and clear the form
         this.setState(() => ({
             value: ''
         }))

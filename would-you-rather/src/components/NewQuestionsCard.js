@@ -28,7 +28,7 @@ const styles ={
         marginBottom: 12,
     },
     inputs: {
-        width: "-webkit-fill-available"
+       // width: "-webkit-fill-available"
     },
     submitBtn: {
         marginTop: 10,
