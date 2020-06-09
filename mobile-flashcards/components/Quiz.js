@@ -1,7 +1,9 @@
 import React, {Component} from 'react'
 import { connect } from 'react-redux'
-import {View, Text} from 'react-native'
-import { grey } from '../utils/colors'
+import {View, Text, TouchableOpacity} from 'react-native'
+import * as Permissions from 'expo-permissions'
+import {Foundation} from '@expo/vector-icons'
+import { white, grey } from '../utils/colors'
 import { clearLocalNotification, setLocalNotification } from '../utils/api'
 import { BasicButton, TextButton } from './Buttons'
 
@@ -10,13 +12,47 @@ class Quiz extends Component{
     state = {
         numCorrect: 0,
         currentQuestion: 0,
-        showAnswer: false
+        showAnswer: false,
+        status: 'undetermined'
     }
 
     componentDidMount(){
         // When the user starts to take a Quiz clear the current notification and set a new one for tomorrow.
-        clearLocalNotification()
-            .then(setLocalNotification)
+        Permissions.getAsync(Permissions.NOTIFICATIONS)
+            .then(({status}) => {
+                if(status === 'granted'){
+                    clearLocalNotification()
+                            .then(setLocalNotification)
+                }
+
+                this.setState(() => ({status}))
+            })
+            .catch((error) => {
+                console.warn('Error getting notification permission: ', error)
+
+                this.setState(() => ({
+                    status: 'undetermined'
+                }))
+            })
+        
+    }
+
+    askPermission = () => {
+        Permissions.askAsync(Permissions.NOTIFICATIONS)
+            .then(({status}) => {
+                if(status === 'granted'){
+                    setLocalNotification()
+                }
+
+                this.setState(() => ({status}))
+            })
+            .catch((error) => {
+                console.warn('Error asking notification permission: ', error)
+
+                this.setState(() => ({
+                    status: 'undetermined'
+                }))
+            })
     }
 
     // Update the current question without changing the number of correct responses
@@ -51,7 +87,29 @@ class Quiz extends Component{
 
     render(){
         const {deck, navigation} = this.props
-        const {currentQuestion, numCorrect } = this.state
+        const {currentQuestion, numCorrect, status } = this.state
+
+        // First check for notification permissions
+        if(status === 'denied'){
+            return(
+                <View style={styles.center}>
+                    <Foundation name='alert' size={50} />
+                    <Text>You denied your notification access. You can fix this by visiting your settings and enabling notification services for this app</Text>
+                </View>
+            )
+        }
+        if(status === 'undetermined'){
+            return(
+                <View style={styles.center}>
+                    <Foundation name='alert' size={50} />
+                    <Text>You need to enable notification services for this app.</Text>
+
+                    <TouchableOpacity onPress={this.askPermission} style={styles.button}>
+                        <Text style={styles.buttonText}>Enable</Text>
+                    </TouchableOpacity>
+                </View>
+            )
+        }
         
         // If there are no questions in the deck, let the user know and give them a button to go back and add one
         if(deck.questions.length === 0){
@@ -166,6 +224,16 @@ const styles = {
     resultText: {
         fontSize: 20,
         color: grey
+    },
+    center:{
+        flex: 1,
+        justifyContent: 'center',
+        alignItems: 'center',
+        marginLeft: 30,
+        marginRight: 30,
+    },
+    buttonText: {
+        fontSize: 20
     },
 }
 

@@ -25,7 +25,7 @@ class AddCard extends Component{
 
     // Submit the new card to the deck
     submit = () => {
-        // TODO: Let the user know they need to enter something in for the fields
+        // Dont allow empty values to be entered
         if(this.state.questionValue.trim() === "" || this.state.answerValue.trim() === ""){
             return
         }
@@ -55,14 +55,13 @@ class AddCard extends Component{
 
         return (
             <View style={styles.container}>
-               
-                    <Text style={styles.title}>Question</Text>
-                    <TextInput 
-                        onChangeText={(text) => this.onChangeQuestionText(text)}
-                        value={questionValue}
-                        placeholder='Question'
-                        style={styles.input}
-                    />
+                <Text style={styles.title}>Question</Text>
+                <TextInput 
+                    onChangeText={(text) => this.onChangeQuestionText(text)}
+                    value={questionValue}
+                    placeholder='Question'
+                    style={styles.input}
+                />
 
                 <Text style={styles.title}>Answer</Text>
                 <TextInput 

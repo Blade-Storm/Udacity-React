@@ -24,10 +24,6 @@ export function Deck({deckData, navigation}){
 }
 
 class DeckOverviewCard extends Component{
-    // componentDidMount(){
-    //    this.props.dispatch(receiveDecks())
-    // }
-
     render(){
         const {decks, navigation} = this.props
         

@@ -52,18 +52,6 @@ export function addCardToDeck(deckTitle, newCard){
 
 // Delete a deck
 export function deleteDeck(deckTitle){
-    // return AsyncStorage.getItem(DECK_STORAGE_KEY)
-    //     .then((results) => {
-    //         const data = JSON.parse(results)
-    //         console.log("1: ", data)
-    //         data[deckTitle] = undefined
-    //         console.log("2: ", data)
-    //         delete data[deckTitle]
-            
-    //         data = Object.keys(data).length === 0 ? null : data
-    //         console.log("3: ", data)
-    //         AsyncStorage.setItem(DECK_STORAGE_KEY, JSON.stringify(data))
-    //     })
     AsyncStorage.removeItem(DECK_STORAGE_KEY, deckTitle)
         .then((data) => {
             return data !== null ? data : null
@@ -75,25 +63,25 @@ export function deleteDeck(deckTitle){
 
 
 export function clearLocalNotification () {
-    return AsyncStorage.removeItem(NOTIFICATION_KEY)
-      .then(Notifications.cancelAllScheduledNotificationsAsync)
-  }
+  return AsyncStorage.removeItem(NOTIFICATION_KEY)
+    .then(Notifications.cancelAllScheduledNotificationsAsync)
+}
   
-  function createNotification () {
-    return {
-      title: `Remeber to keep learning!`,
-      body: "👋 Don't forget to quiz yourself for today!",
-      android: {
-        sound: true,
-        priority: 'high',
-        sticky: false,
-        vibrate: true,
-      }
+function createNotification () {
+  return {
+    title: `Remeber to keep learning!`,
+    body: "👋 Don't forget to quiz yourself for today!",
+    android: {
+      sound: true,
+      priority: 'high',
+      sticky: false,
+      vibrate: true,
     }
   }
+}
   
-  export function setLocalNotification(){
-    AsyncStorage.getItem(NOTIFICATION_KEY)
+export function setLocalNotification(){
+  AsyncStorage.getItem(NOTIFICATION_KEY)
     .then(JSON.parse)
     .then((data) => {
       if (data === null) {
@@ -101,12 +89,12 @@ export function clearLocalNotification () {
           .then(({ status }) => {
             if (status === 'granted') {
               Notifications.cancelAllScheduledNotificationsAsync()
-  
+
               let tomorrow = new Date()
               tomorrow.setDate(tomorrow.getDate() + 1)
               tomorrow.setHours(20)
               tomorrow.setMinutes(0)
-  
+
               Notifications.scheduleLocalNotificationAsync(
                 createNotification(),
                 {
@@ -114,7 +102,7 @@ export function clearLocalNotification () {
                   repeat: 'day',
                 }
               )
-  
+
               AsyncStorage.setItem(NOTIFICATION_KEY, JSON.stringify(true))
             }
           })

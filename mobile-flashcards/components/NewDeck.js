@@ -16,8 +16,7 @@ class NewDeck extends Component{
     submit = () => {
         const value = this.state.value
         // If the new title value is empty dont save it
-        // TODO: Add a message for the user
-        if(value === ''){
+        if(value.trim() === ''){
             return
         }
 
