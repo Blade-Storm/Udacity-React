@@ -1,11 +1,12 @@
 import React, {Component} from 'react'
-import { Button, View, Text } from 'react-native'
+import { Button, View, Text, Animated } from 'react-native'
 import {connect} from 'react-redux'
 import {TextButton,BasicButton} from './Buttons'
 import { deleteDeck} from '../utils/api'
 import { removeDeck } from '../actions'
 import {grey, red} from '../utils/colors'
 import DeckOverview from '../components/DeckOverview'
+
 
 
 /**
@@ -16,28 +17,54 @@ import DeckOverview from '../components/DeckOverview'
  * 4. Displays the decks details
  */
 class DeckDetails extends Component{
+    state={
+        opacity: new Animated.Value(0)
+    }
+
+    componentDidMount(){
+        const {opacity} = this.state
+
+        Animated.timing(opacity, {toValue: 1, duration: 1000}).start()
+    }
 
     // Delete the deck
-    deleteDeck = (deckTitle) => {
-        // Remove the deck from Redux and the Storage
-        this.props.dispatch(removeDeck(deckTitle))
-        deleteDeck(deckTitle)
+    // deleteDeck = (deckTitle) => {
+    //     // Remove the deck from Redux and the Storage
+    //     this.props.dispatch(removeDeck(deckTitle))
+    //     deleteDeck(deckTitle)
+
+    //     // Navigate back to the deck overview view
+    //     this.toHome()
+    // }
+
+    toHome = () => {
+        // Works only on web. Android error: "The action GO_BACK was not handled by any navigator. Is there anything to go back to?"
+        // this.props.navigation.goBack()
+
+        // Works only on web. Android error: "null is not an object (evaluating deckData.questions)"
+        // this.props.navigation.navigate("New Deck")
+        this.props.navigation.navigate("Decks")
+        // this.props.navigation.dispatch(NavigationActions.back())
+
     }
 
     
     render(){
+        const {opacity} = this.state
         const {deckData, navigation} = this.props
-        if(deckData === null){
-            navigation.navigate("Decks")
+        if(deckData === undefined || deckData === null || Object.keys(deckData).length === 0){
+            console.log("DECK DATA: ", deckData)
+            this.toHome()
         }
 
         let cardCountText = deckData.questions.length === 1 ? "card" : "cards"
-
+        
         return(
+            
             <View style={styles.container}>
                 <View style={styles.textContainer}>
-                    <Text style={styles.title}>{deckData.title}</Text>
-                    <Text style={styles.questionCount}>{deckData.questions.length} {cardCountText}</Text>
+                    <Animated.Text style={[styles.title, {opacity}]}>{deckData.title}</Animated.Text>
+                    <Animated.Text style={[styles.questionCount, {opacity}]}>{deckData.questions.length} {cardCountText}</Animated.Text>
                 </View>
                 
                 <View style={{flex: 1, justifyContent: "flex-end", width: "100%"}}>
@@ -84,8 +111,6 @@ const styles = {
 
 function mapStateToProps(state, {route, navigation}){
     const title = route.params.title !== undefined ? route.params.title : null
-    console.log("MSTP TITLE: ", title)
-    console.log("MSTP DECK: ", state[title])
 
     return {
         deckData:  state[title] !== undefined ? state[title] : null,

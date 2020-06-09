@@ -37,8 +37,4 @@ export function removeDeck(title){
         type: DELETE_DECK, 
         deckTitle: title
       }
-    // return {
-    //     type: DELETE_DECK,
-    //     deckTitle
-    // }
 }

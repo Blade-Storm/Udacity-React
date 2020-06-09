@@ -1,4 +1,4 @@
-import * as React from 'react';
+import React, {Component} from 'react';
 import { Platform, StyleSheet, Text, View, StatusBar } from 'react-native';
 import { createMaterialTopTabNavigator } from '@react-navigation/material-top-tabs';
 import { NavigationContainer } from '@react-navigation/native';
@@ -14,6 +14,7 @@ import DeckDetails from './components/DeckDetails'
 import Quiz from  './components/Quiz'
 import reducer from './reducers'
 import middleware from './middleware'
+import {setLocalNotification} from './utils/api'
 
 const tabBarOptions = {
   activeTintColor: white,
@@ -95,20 +96,26 @@ const stackNavigatorOptions = (route) => {
 const StackNavigator = createStackNavigator()
 
 
-export default function App() {
-  return (
-    <Provider store={createStore(reducer, middleware)}>
-      <View style={{flex: 1}}>
-        <ScreenStatusBar backgroundColor={black} barStyle='light-content'></ScreenStatusBar>
-          <NavigationContainer>
-            <StackNavigator.Navigator>
-                <StackNavigator.Screen name="TabNavigation" options={() => stackNavigatorOptions().tabNavigationScreen} component={TabNavigation} />
-                <StackNavigator.Screen name="DeckDetails" options={({ route }) => stackNavigatorOptions(route).deckDetails} component={DeckDetails} />
-                <StackNavigator.Screen name="AddCard" options={({ route }) => stackNavigatorOptions(route).addCard} component={AddCard} />
-                <StackNavigator.Screen name="Quiz" options={({ route }) => stackNavigatorOptions(route).quiz} component={Quiz} />
-            </StackNavigator.Navigator>
-          </NavigationContainer>
-      </View>
-    </Provider>
-  );
+export default class App extends Component{
+  componentDidMount(){
+    setLocalNotification()
+  }
+
+  render(){
+    return (
+      <Provider store={createStore(reducer, middleware)}>
+        <View style={{flex: 1}}>
+          <ScreenStatusBar backgroundColor={black} barStyle='light-content'></ScreenStatusBar>
+            <NavigationContainer>
+              <StackNavigator.Navigator>
+                  <StackNavigator.Screen name="TabNavigation" options={({route}) => stackNavigatorOptions(route).tabNavigationScreen} component={TabNavigation} />
+                  <StackNavigator.Screen name="DeckDetails" options={({ route }) => stackNavigatorOptions(route).deckDetails} component={DeckDetails} />
+                  <StackNavigator.Screen name="AddCard" options={({ route }) => stackNavigatorOptions(route).addCard} component={AddCard} />
+                  <StackNavigator.Screen name="Quiz" options={({ route }) => stackNavigatorOptions(route).quiz} component={Quiz} />
+              </StackNavigator.Navigator>
+            </NavigationContainer>
+        </View>
+      </Provider>
+    );
+  }
 }

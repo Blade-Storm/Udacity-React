@@ -30,7 +30,6 @@ function entries(state={}, action){
             
             let newDeck = {}
             stateArr.forEach(item => newDeck[item.title] = item)
-                
             return newDeck
             
         default: 

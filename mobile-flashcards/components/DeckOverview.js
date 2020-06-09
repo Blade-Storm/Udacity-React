@@ -10,8 +10,6 @@ import {white, grey, black} from '../utils/colors'
 // Deck component to see the title, and question count for each deck in the default view
 export function Deck({deckData, navigation}){
     let cardCountText = deckData.questions.length === 1 ? "card" : "cards"
-    
-
     return (
         <View >
             <TouchableWithoutFeedback onPress={() => navigation.navigate("DeckDetails", {title: deckData.title})}>
@@ -26,15 +24,17 @@ export function Deck({deckData, navigation}){
 }
 
 class DeckOverviewCard extends Component{
-    componentDidMount(){
-        this.props.dispatch(receiveDecks())
-    }
+    // componentDidMount(){
+    //    this.props.dispatch(receiveDecks())
+    // }
 
     render(){
         const {decks, navigation} = this.props
-
+        
+        
         // View for when there are no decks
-        if(decks === undefined || decks === null){
+        if(decks === undefined || decks === null || Object.keys(decks).length === 0){
+            console.log("DECK OVERVIEW: ", decks)
             return (
                 <View style={styles.noDecksContainer}>
                     <Text style={styles.noDecksText}>You don't have any Decks. Click on the New Deck tab to create one!</Text>

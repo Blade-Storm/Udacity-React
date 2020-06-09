@@ -2,6 +2,7 @@ import React, {Component} from 'react'
 import { connect } from 'react-redux'
 import {View, Text} from 'react-native'
 import { grey } from '../utils/colors'
+import { clearLocalNotification, setLocalNotification } from '../utils/api'
 import { BasicButton, TextButton } from './Buttons'
 
 
@@ -10,6 +11,12 @@ class Quiz extends Component{
         numCorrect: 0,
         currentQuestion: 0,
         showAnswer: false
+    }
+
+    componentDidMount(){
+        // When the user starts to take a Quiz clear the current notification and set a new one for tomorrow.
+        clearLocalNotification()
+            .then(setLocalNotification)
     }
 
     // Update the current question without changing the number of correct responses
@@ -141,8 +148,7 @@ const styles = {
     questionText: {
         justifyContent: "center",
         alignItems: "center",
-        fontSize: 20,
-        color: grey,
+        fontSize: 30,
         marginBottom: 30
     },
     quizContent: {
