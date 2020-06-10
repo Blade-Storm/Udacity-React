@@ -10,7 +10,8 @@ import {BasicButton} from './Buttons'
 class NewDeck extends Component{
     state={
         value: '',
-        error: false
+        errorEmpty: false,
+        errorDuplicate: false
     }
 
     // Submit the new deck to the data store
@@ -19,7 +20,12 @@ class NewDeck extends Component{
         // If the new title value is empty dont save it
         if(value.trim() === ''){
             this.setState(() => ({
-                error: true
+                errorEmpty: true
+            }))
+            return
+        }else if((value in this.props.decks)){
+            this.setState(() => ({
+                errorDuplicate: true
             }))
             return
         }
@@ -32,7 +38,8 @@ class NewDeck extends Component{
         // Navigate to the individual deck view and clear the form
         this.setState(() => ({
             value: '',
-            error: false
+            errorEmpty: false,
+            errorDuplicate: false
         }))
 
         this.props.navigation.navigate('DeckDetails', {title: value})
@@ -47,6 +54,7 @@ class NewDeck extends Component{
 
     render(){
         const {value} = this.state
+        const {decks} = this.props
 
         return(
             <View style={styles.container}>
@@ -58,7 +66,10 @@ class NewDeck extends Component{
                     placeholder='Deck Title'
                     style={styles.input}
                 />
-                {this.state.error && <Text style={{color: 'red'}}>The title cannot be empty</Text>}
+                {this.state.errorEmpty || this.state.errorDuplicate ?
+                    <Text style={{color: 'red'}}>The title cannot be empty or a duplicate</Text>
+                    : null
+                }
 
                 <BasicButton 
                         title="Submit" 
@@ -94,17 +105,12 @@ const styles = {
 }
 
 function mapStateToProps(state, {navigation}){
-
+    
     return {
-        state,
+        decks: state,
         navigation
     }
 }
 
-function mapDispatchToProps({dispatch}){
-    return{
-        dispatch
-    }
-}
 
 export default connect(mapStateToProps)(NewDeck)
