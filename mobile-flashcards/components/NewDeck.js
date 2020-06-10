@@ -24,6 +24,7 @@ class NewDeck extends Component{
             }))
             return
         }else if((value in this.props.decks)){
+            // If the title already exists dont save it (otherwise it will overwrite the existing deck)
             this.setState(() => ({
                 errorDuplicate: true
             }))
