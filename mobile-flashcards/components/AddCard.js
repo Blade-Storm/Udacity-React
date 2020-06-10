@@ -8,7 +8,9 @@ import { addCardToDeck } from '../utils/api'
 class AddCard extends Component{
     state = {
         answerValue: '',
-        questionValue: ''
+        questionValue: '',
+        errorQuestion: false,
+        errorAnswer: false,
     }
 
     onChangeQuestionText = (question) => {
@@ -25,8 +27,21 @@ class AddCard extends Component{
 
     // Submit the new card to the deck
     submit = () => {
+        let errors = {}
         // Dont allow empty values to be entered
-        if(this.state.questionValue.trim() === "" || this.state.answerValue.trim() === ""){
+        if(this.state.questionValue.trim() === ""){
+            errors.errorQuestion = true
+        }
+        if(this.state.answerValue.trim() === ""){
+            errors.errorAnswer = true
+        }
+
+        // If there are any errors show them and dont submit the form
+        if(Object.keys(errors).length > 0){
+            this.setState(() => ({
+                errorQuestion: errors.errorQuestion !== undefined ? errors.errorQuestion : false,
+                errorAnswer: errors.errorAnswer !== undefined ? errors.errorAnswer : false
+            }))
             return
         }
 
@@ -43,7 +58,8 @@ class AddCard extends Component{
         // Clear the form
         this.setState(() => ({
             question: "",
-            answer: ""
+            answer: "",
+            error: false
         }))
 
         // Navigate back
@@ -62,6 +78,7 @@ class AddCard extends Component{
                     placeholder='Question'
                     style={styles.input}
                 />
+                {this.state.errorQuestion && <Text style={{color: 'red'}}>The question cannot be empty</Text>}
 
                 <Text style={styles.title}>Answer</Text>
                 <TextInput 
@@ -70,6 +87,7 @@ class AddCard extends Component{
                     placeholder='Answer'
                     style={styles.input}
                 />
+                {this.state.errorAnswer && <Text style={{color: 'red'}}>The answer cannot be empty</Text>}
             
                 <BasicButton 
                         title="Submit" 

@@ -9,7 +9,8 @@ import {BasicButton} from './Buttons'
 
 class NewDeck extends Component{
     state={
-        value: ''
+        value: '',
+        error: false
     }
 
     // Submit the new deck to the data store
@@ -17,6 +18,9 @@ class NewDeck extends Component{
         const value = this.state.value
         // If the new title value is empty dont save it
         if(value.trim() === ''){
+            this.setState(() => ({
+                error: true
+            }))
             return
         }
 
@@ -27,7 +31,8 @@ class NewDeck extends Component{
 
         // Navigate to the individual deck view and clear the form
         this.setState(() => ({
-            value: ''
+            value: '',
+            error: false
         }))
 
         this.props.navigation.navigate('DeckDetails', {title: value})
@@ -53,6 +58,7 @@ class NewDeck extends Component{
                     placeholder='Deck Title'
                     style={styles.input}
                 />
+                {this.state.error && <Text style={{color: 'red'}}>The title cannot be empty</Text>}
 
                 <BasicButton 
                         title="Submit" 
@@ -87,10 +93,17 @@ const styles = {
     }
 }
 
-function mapStateToProps(dispatch, {navigation}){
+function mapStateToProps(state, {navigation}){
+
     return {
-        dispatch,
+        state,
         navigation
+    }
+}
+
+function mapDispatchToProps({dispatch}){
+    return{
+        dispatch
     }
 }
 

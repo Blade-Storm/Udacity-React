@@ -13,11 +13,12 @@ class Quiz extends Component{
         numCorrect: 0,
         currentQuestion: 0,
         showAnswer: false,
-        status: 'undetermined'
+        status: 'granted'
     }
 
     componentDidMount(){
         // When the user starts to take a Quiz clear the current notification and set a new one for tomorrow.
+        // The notification is a reminder to test (take a quiz)
         Permissions.getAsync(Permissions.NOTIFICATIONS)
             .then(({status}) => {
                 if(status === 'granted'){
@@ -35,24 +36,6 @@ class Quiz extends Component{
                 }))
             })
         
-    }
-
-    askPermission = () => {
-        Permissions.askAsync(Permissions.NOTIFICATIONS)
-            .then(({status}) => {
-                if(status === 'granted'){
-                    setLocalNotification()
-                }
-
-                this.setState(() => ({status}))
-            })
-            .catch((error) => {
-                console.warn('Error asking notification permission: ', error)
-
-                this.setState(() => ({
-                    status: 'undetermined'
-                }))
-            })
     }
 
     // Update the current question without changing the number of correct responses
@@ -88,28 +71,6 @@ class Quiz extends Component{
     render(){
         const {deck, navigation} = this.props
         const {currentQuestion, numCorrect, status } = this.state
-
-        // First check for notification permissions
-        if(status === 'denied'){
-            return(
-                <View style={styles.center}>
-                    <Foundation name='alert' size={50} />
-                    <Text>You denied your notification access. You can fix this by visiting your settings and enabling notification services for this app</Text>
-                </View>
-            )
-        }
-        if(status === 'undetermined'){
-            return(
-                <View style={styles.center}>
-                    <Foundation name='alert' size={50} />
-                    <Text>You need to enable notification services for this app.</Text>
-
-                    <TouchableOpacity onPress={this.askPermission} style={styles.button}>
-                        <Text style={styles.buttonText}>Enable</Text>
-                    </TouchableOpacity>
-                </View>
-            )
-        }
         
         // If there are no questions in the deck, let the user know and give them a button to go back and add one
         if(deck.questions.length === 0){
